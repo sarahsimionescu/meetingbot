@@ -231,6 +231,11 @@ resource "aws_ecs_task_definition" "server" {
     environment = {
       NODE_TLS_REJECT_UNAUTHORIZED = "0"
       DATABASE_URL                 = "postgresql://${aws_db_instance.this.username}:${random_password.db_password.result}@${aws_db_instance.this.endpoint}/${aws_db_instance.this.db_name}?sslmode=require"
+       AUTH_GITHUB_ID     = var.auth_github_id
+       AUTH_GITHUB_SECRET = var.auth_github_secret
+       GITHUB_TOKEN       = var.github_token
+       AWS_BUCKET_NAME    = aws_s3_bucket.this.bucket
+       AWS_REGION         = var.aws_region
     }
 
     command = "cd ../server && pnpm i && pnpm db:migrate && echo 'Database migrations completed successfully'"
